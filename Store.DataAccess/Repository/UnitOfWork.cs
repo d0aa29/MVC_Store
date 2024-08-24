@@ -20,6 +20,11 @@ namespace Store.DataAccess.Repository
 
         public IAppUserRepository appUser { get; private set; }
 
+        public IOrderHeaderRepository orderHeader { get; private set; }
+
+        public IOrderDetailRepository orderDetail { get; private set; }
+
+      
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -28,6 +33,8 @@ namespace Store.DataAccess.Repository
             company=new CompanyRepository(_db);
             ShoppingCart=new ShoppingCartRepository(_db);
             appUser=new AppUserRepository(_db);
+            orderHeader=new OrderHeaderRepository(_db);
+            orderDetail= new OrderDetailRepositorytory(_db);
 
         }
 
