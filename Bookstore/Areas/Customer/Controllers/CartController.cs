@@ -36,9 +36,11 @@ namespace Mystore.Areas.Customer.Controllers
             }
                 return View(ShoppingCartvM);
         }
-        public IActionResult plus(int cartid) { 
-            var cartFromDb= _unitOfWork.ShoppingCart.Get(u=>u.Id==cartid);
+        public IActionResult plus(int cartId) { 
+         
+             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
             cartFromDb.Count += 1;
+            _unitOfWork.ShoppingCart.Update(cartFromDb);
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
