@@ -381,7 +381,7 @@ namespace Mystore.Areas.Customer.Controllers
                     _unitOfWork.orderHeader.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
-              //  HttpContext.Session.Clear();
+               HttpContext.Session.Clear();
 
             }
 
