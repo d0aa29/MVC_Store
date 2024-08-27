@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Store.Utility;
 using Stripe;
+using Microsoft.CodeAnalysis.Options;
 
 namespace Bookstore
 {
@@ -30,8 +31,13 @@ namespace Bookstore
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
-			// Configure application cookies for login/logout
-			builder.Services.ConfigureApplicationCookie(options =>
+			builder.Services.AddAuthentication().AddFacebook(option => {
+				option.AppId = "490877137028185";
+            option.AppSecret= "35037d583154dd92f411fa7c1c248e3f";	
+
+			});
+            // Configure application cookies for login/logout
+            builder.Services.ConfigureApplicationCookie(options =>
 			{
 				options.LoginPath = $"/Identity/Account/Login";
 				options.LogoutPath = $"/Identity/Account/Logout";
