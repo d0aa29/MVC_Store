@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Store.Models;
 using Store.Utility;
 using Stripe.Checkout;
+using Store.DataAccess.Repository;
 
 namespace Mystore.Areas.Customer.Controllers
 {
@@ -49,8 +50,11 @@ namespace Mystore.Areas.Customer.Controllers
         }
         public IActionResult minus(int cartid)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartid);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartid, tracked: true);
             if (cartFromDb.Count <= 1){
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                 _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
+
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else{          
@@ -62,7 +66,9 @@ namespace Mystore.Areas.Customer.Controllers
         }
         public IActionResult Remove(int cartid)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartid);            
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartid, tracked:true);
+            HttpContext.Session.SetInt32(SD.SessionCart,
+                  _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count()-1);
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
             _unitOfWork.Save();
              

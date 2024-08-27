@@ -38,14 +38,14 @@ namespace Bookstore
 				options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 			});
 
-			//// Configure session services
-			//builder.Services.AddDistributedMemoryCache();
-			//builder.Services.AddSession(options =>
-			//{
-			//	options.IdleTimeout = TimeSpan.FromMinutes(100);
-			//	options.Cookie.HttpOnly = true;
-			//	options.Cookie.IsEssential = true;
-			//});
+			// Configure session services
+			builder.Services.AddDistributedMemoryCache();
+			builder.Services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromMinutes(100);
+				options.Cookie.HttpOnly = true;
+				options.Cookie.IsEssential = true;
+			});
 
 			// Add Razor Pages services
 			builder.Services.AddRazorPages();
@@ -72,8 +72,9 @@ namespace Bookstore
 
 			app.UseRouting();
 
-			// Use session middleware before authentication
-	    	//	app.UseSession();
+			//Use session middleware before authentication
+
+			app.UseSession();
 
 			app.UseAuthentication();
 			app.UseAuthorization();

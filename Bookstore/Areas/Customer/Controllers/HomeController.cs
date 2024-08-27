@@ -7,6 +7,8 @@ using System.Diagnostics;
 using Store.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Store.Utility;
+using Microsoft.AspNetCore.Http;
 
 namespace Mystore.Areas.Customer.Controllers
 {
@@ -57,14 +59,18 @@ namespace Mystore.Areas.Customer.Controllers
             {
                 cartFromDb.Count += Cart.Count;
                 _UnitOfWork.ShoppingCart.Update(cartFromDb);
-            }
+				_UnitOfWork.Save();
+			}
             else
             {
                 _UnitOfWork.ShoppingCart.Add(Cart);
-            }
+				_UnitOfWork.Save();
+                HttpContext.Session.SetInt32(SD.SessionCart, 
+                    _UnitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userid).Count());
+			}
 
             TempData["Succes"] = "Cart Updated Successfully";
-            _UnitOfWork.Save();
+           
             return RedirectToAction("Index");
         }
         public IActionResult Privacy()
