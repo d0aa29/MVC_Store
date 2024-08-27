@@ -34,7 +34,7 @@ namespace Store.DataAccess.Repository
             ShoppingCart=new ShoppingCartRepository(_db);
             appUser=new AppUserRepository(_db);
             orderHeader=new OrderHeaderRepository(_db);
-            orderDetail= new OrderDetailRepositorytory(_db);
+            orderDetail= new OrderDetailRepository(_db);
 
         }
 
