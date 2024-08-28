@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Store.DataAccess.Data;
 using Store.DataAccess.Repository;
+using Store.DataAccess.DbIntializer;
 using Store.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -31,13 +32,14 @@ namespace Bookstore
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
-			builder.Services.AddAuthentication().AddFacebook(option => {
+			builder.Services.AddAuthentication().AddFacebook(option =>
+			{
 				option.AppId = "490877137028185";
-            option.AppSecret= "35037d583154dd92f411fa7c1c248e3f";	
+				option.AppSecret = "35037d583154dd92f411fa7c1c248e3f";
 
 			});
-            // Configure application cookies for login/logout
-            builder.Services.ConfigureApplicationCookie(options =>
+			// Configure application cookies for login/logout
+			builder.Services.ConfigureApplicationCookie(options =>
 			{
 				options.LoginPath = $"/Identity/Account/Login";
 				options.LogoutPath = $"/Identity/Account/Logout";
@@ -52,11 +54,12 @@ namespace Bookstore
 				options.Cookie.HttpOnly = true;
 				options.Cookie.IsEssential = true;
 			});
-
+			builder.Services.AddScoped<IDbIntializer, DbIntializer>();
 			// Add Razor Pages services
 			builder.Services.AddRazorPages();
 
 			// Register application services
+
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddScoped<IEmailSender, EmailSender>();
 
@@ -84,13 +87,22 @@ namespace Bookstore
 
 			app.UseAuthentication();
 			app.UseAuthorization();
-
-			app.MapRazorPages();
+            SeedDatabase();
+            app.MapRazorPages();
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 			app.Run();
+
+			void SeedDatabase()
+			{
+				using (var scope = app.Services.CreateScope())
+				{
+					var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbIntializer>();
+					dbInitializer.Intialize();
+				}
+			}
 		}
 	}
 }
