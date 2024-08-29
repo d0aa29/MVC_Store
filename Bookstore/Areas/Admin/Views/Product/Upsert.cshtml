@@ -116,7 +116,10 @@
 					<div class="border m-2 p-1 text-center">
 						<img src="@image.ImageUrl" width="100%"
 							 style="border-radius:5px;border:1px solid #bbb9b9 " />
-
+							 <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageid="@image.Id">
+							<i class="bi bi-trash-fill">Delete</i>
+							 </a>
+							 
 					</div>
 				}
 			}

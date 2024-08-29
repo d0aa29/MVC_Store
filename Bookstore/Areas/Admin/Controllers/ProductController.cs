@@ -140,73 +140,98 @@ namespace Mystore.Areas.Admin.Controllers
 
         }
 
-        //public IActionResult Edit(int? id)
-        //{
-        //	if (id == null)
-        //	{
-        //		return NotFound();
-        //	}
-        //	//Category? category = _db.Categories.Where(c => c.Id == id).FirstOrDefault();
 
-        //	Product? Product = _UnitOfWork.Product.Get(c => c.Id == id);
-        //	//Category category = _db.Categories.Find(id);
+		public IActionResult DeleteImage(int imageId) {
 
-        //	if (Product == null)
-        //	{
-        //		return NotFound();
-        //	}
-        //	return View(Product);
-        //}
+            var imgToBeDeleted = _UnitOfWork.productImage.Get(u => u.Id == imageId);
+            int producrId= imgToBeDeleted.ProductId;
+            if (imgToBeDeleted != null)
+            {
+                if (!string.IsNullOrEmpty( imgToBeDeleted.ImageUrl ))
+                {
+                    var oldpath = Path.Combine(_webHostEnvironment.WebRootPath,
+								  imgToBeDeleted.ImageUrl.TrimStart('\\'));
 
-        //[HttpPost]
-        //public IActionResult Edit(Product obj)
-        //{
+                    if (System.IO.File.Exists(oldpath))
+                    {
+                        System.IO.File.Delete(oldpath);
+                    }
 
-        //	if (ModelState.IsValid)
-        //	{
-        //		_UnitOfWork.Product.Update(obj);
-        //		_UnitOfWork.Save();
-        //		TempData["Succes"] = "Product Edited successfully";
+                }
+                _UnitOfWork.productImage.Remove(imgToBeDeleted);
+                _UnitOfWork.Save();
+				TempData["Succes"] = "Image Deleteed successfully";
+			}
 
-        //		return RedirectToAction("Index");
-        //	}
-        //	return View();
-        //}
-        //public IActionResult Delete(int? id)
-        //{
-        //	if (id == null)
-        //	{
-        //		return NotFound();
-        //	}
-        //	//Category? category = _db.Categories.Where(c => c.Id == id).FirstOrDefault();
+        return RedirectToAction(nameof(Upsert),new {id= producrId });
+        }
+		//public IActionResult Edit(int? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return NotFound();
+		//	}
+		//	//Category? category = _db.Categories.Where(c => c.Id == id).FirstOrDefault();
 
-        //	Product? Product = _UnitOfWork.Product.Get(c => c.Id == id);
-        //	//Category category = _db.Categories.Find(id);
+		//	Product? Product = _UnitOfWork.Product.Get(c => c.Id == id);
+		//	//Category category = _db.Categories.Find(id);
 
-        //	if (Product == null)
-        //	{
-        //		return NotFound();
-        //	}
-        //	return View(Product);
-        //}
+		//	if (Product == null)
+		//	{
+		//		return NotFound();
+		//	}
+		//	return View(Product);
+		//}
 
-        //[HttpPost, ActionName("Delete")]
-        //public IActionResult DeletePost(int? id)
-        //{
+		//[HttpPost]
+		//public IActionResult Edit(Product obj)
+		//{
 
-        //	Product obj = _UnitOfWork.Product.Get(c => c.Id == id);
-        //	if (obj == null)
-        //	{
-        //		return NotFound();
-        //	}
-        //	_UnitOfWork.Product.Remove(obj);
-        //	_UnitOfWork.Save();
-        //	TempData["Succes"] = "Product Deleteed successfully";
-        //	return RedirectToAction("Index");
+		//	if (ModelState.IsValid)
+		//	{
+		//		_UnitOfWork.Product.Update(obj);
+		//		_UnitOfWork.Save();
+		//		TempData["Succes"] = "Product Edited successfully";
 
-        //}
+		//		return RedirectToAction("Index");
+		//	}
+		//	return View();
+		//}
+		//public IActionResult Delete(int? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return NotFound();
+		//	}
+		//	//Category? category = _db.Categories.Where(c => c.Id == id).FirstOrDefault();
 
-        [HttpGet]
+		//	Product? Product = _UnitOfWork.Product.Get(c => c.Id == id);
+		//	//Category category = _db.Categories.Find(id);
+
+		//	if (Product == null)
+		//	{
+		//		return NotFound();
+		//	}
+		//	return View(Product);
+		//}
+
+		//[HttpPost, ActionName("Delete")]
+		//public IActionResult DeletePost(int? id)
+		//{
+
+		//	Product obj = _UnitOfWork.Product.Get(c => c.Id == id);
+		//	if (obj == null)
+		//	{
+		//		return NotFound();
+		//	}
+		//	_UnitOfWork.Product.Remove(obj);
+		//	_UnitOfWork.Save();
+		//	TempData["Succes"] = "Product Deleteed successfully";
+		//	return RedirectToAction("Index");
+
+		//}
+
+		[HttpGet]
 
         public IActionResult GetAll()
         {
