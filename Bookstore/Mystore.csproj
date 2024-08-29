@@ -30,7 +30,6 @@
   <ItemGroup>
     <Folder Include="Areas\NewFolder\" />
     <Folder Include="Controllers\" />
-    <Folder Include="wwwroot\images\product\" />
   </ItemGroup>
 
 </Project>

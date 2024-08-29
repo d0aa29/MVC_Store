@@ -2,7 +2,7 @@
 
 <form method="post" enctype="multipart/form-data">
 	<input asp-for="Product.Id" hidden />
-	<input asp-for="Product.ImageUrl" hidden />
+	@* <input asp-for="Product.ImageUrl" hidden /> *@
 	<div class="row">
 		<div class="col-10" >
 
@@ -73,13 +73,11 @@
 							select category
 						</option>
 					</select>
-					@* <input asp-for="CategoryId" class=" form-control" />
-					<span asp-validation-for="CategoryId" class="text-danger"></span> *@
 				</div>
 
 				<div class="mb-2 row">
-					<label asp-for="Product.ImageUrl" class="p-0"> </label>
-					<input type="file" name="formFile" class=" form-control" />
+					<label asp-for="Product.ProductImages" class="p-0"> </label>
+					<input type="file" name="formFiles" class=" form-control" multiple/>
 
 				</div>
 
@@ -111,8 +109,18 @@
 
 		</div>
 		<div class="col-2">
-			<img src="@Model.Product.ImageUrl" width="100%"
-				 style="border-radius:5px;border:1px solid #bbb9b9 "/>
+			@if (Model.Product.ProductImages != null)
+			{
+				foreach (var image in Model.Product.ProductImages)
+				{
+					<div class="border m-2 p-1 text-center">
+						<img src="@image.ImageUrl" width="100%"
+							 style="border-radius:5px;border:1px solid #bbb9b9 " />
+
+					</div>
+				}
+			}
+		@* 	*@
 		</div>
 	</div>
 	

@@ -50,14 +50,14 @@ namespace Mystore.Areas.Admin.Controllers
                 return View(productVM);
             else
             {
-                productVM.Product = _UnitOfWork.Product.Get(u => u.Id == id);
+                productVM.Product = _UnitOfWork.Product.Get(u => u.Id == id,includeproperties: "ProductImages");
                 return View(productVM);
             }
         }
 
         [HttpPost]
 
-        public IActionResult Upsert(ProductVM obj, IFormFile? formFile)
+        public IActionResult Upsert(ProductVM obj, List<IFormFile>? formFiles)
         {
             //if (obj.Name == obj.DisplayOrder.ToString())
             //{
@@ -65,37 +65,65 @@ namespace Mystore.Areas.Admin.Controllers
             //}
             if (ModelState.IsValid)
             {
+				if (obj.Product.Id == 0)
+					_UnitOfWork.Product.Add(obj.Product);
+				else
+					_UnitOfWork.Product.Update(obj.Product);
+				_UnitOfWork.Save();
 
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (formFile != null)
+				string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (formFiles != null)
                 {
-
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(formFile.FileName);
-                    string productpath = Path.Combine(wwwRootPath, @"images\product");
-
-                    if (!(string.IsNullOrEmpty(obj.Product.ImageUrl)))
+                    foreach (var file in formFiles)
                     {
 
-                        var oldpath = Path.Combine(wwwRootPath, obj.Product.ImageUrl.TrimStart('\\'));
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        string productpath = @"images\products\product-" + obj.Product.Id;
 
-                        if (System.IO.File.Exists(oldpath))
+						string finalpath = Path.Combine(wwwRootPath, productpath);
+
+                        if(!Directory.Exists(finalpath))
+                            Directory.CreateDirectory(finalpath);
+
+						using (var filestrem = new FileStream(Path.Combine(finalpath, fileName), FileMode.Create))
                         {
-                            System.IO.File.Delete(oldpath);
+                            file.CopyTo(filestrem);
                         }
-                    }
 
-                    using (var filestrem = new FileStream(Path.Combine(productpath, fileName), FileMode.Create))
-                    {
-                        formFile.CopyTo(filestrem);
-                    }
+                        ProductImage productImage = new() { 
+                         ImageUrl=@"\"+ productpath+@"\"+fileName,
+                         ProductId=obj.Product.Id
 
-                    obj.Product.ImageUrl = @"\images\product\" + fileName;
-                }
-                if (obj.Product.Id == 0)
-                    _UnitOfWork.Product.Add(obj.Product);
-                else
+						};
+
+                        if (obj.Product.ProductImages == null)
+                            obj.Product.ProductImages = new List<ProductImage>();
+
+
+						obj.Product.ProductImages.Add(productImage);
+
+					}
                     _UnitOfWork.Product.Update(obj.Product);
-                _UnitOfWork.Save();
+                    _UnitOfWork.Save();
+					//    if (!(string.IsNullOrEmpty(obj.Product.ImageUrl)))
+					//    {
+
+					//        var oldpath = Path.Combine(wwwRootPath, obj.Product.ImageUrl.TrimStart('\\'));
+
+					//        if (System.IO.File.Exists(oldpath))
+					//        {
+					//            System.IO.File.Delete(oldpath);
+					//        }
+					//    }
+
+					//    using (var filestrem = new FileStream(Path.Combine(productpath, fileName), FileMode.Create))
+					//    {
+					//        formFile.CopyTo(filestrem);
+					//    }
+
+					//    obj.Product.ImageUrl = @"\images\product\" + fileName;
+				}
+             
                 TempData["Succes"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
@@ -199,13 +227,13 @@ namespace Mystore.Areas.Admin.Controllers
             }
 
 
-            var oldpath = Path.Combine(_webHostEnvironment.WebRootPath,
-                          ProductToDeleted.ImageUrl.TrimStart('\\'));
+            //var oldpath = Path.Combine(_webHostEnvironment.WebRootPath,
+            //              ProductToDeleted.ImageUrl.TrimStart('\\'));
 
-            if (System.IO.File.Exists(oldpath))
-            {
-                System.IO.File.Delete(oldpath);
-            }
+            //if (System.IO.File.Exists(oldpath))
+            //{
+            //    System.IO.File.Delete(oldpath);
+            //}
             _UnitOfWork.Product.Remove(ProductToDeleted);
             _UnitOfWork.Save();
             List<Product> ObjProductList = _UnitOfWork.Product.GetAll(includeproperties: "Category").ToList();
