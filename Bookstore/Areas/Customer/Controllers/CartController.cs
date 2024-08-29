@@ -33,9 +33,15 @@ namespace Mystore.Areas.Customer.Controllers
                 OrderHeader = new()
 
             };
-            foreach (var cart in ShoppingCartvM.ShoppingCartList)
+
+            IEnumerable<ProductImage> productImages = _unitOfWork.productImage.GetAll();
+
+
+			foreach (var cart in ShoppingCartvM.ShoppingCartList)
             {
-                cart.Price = GetPriceBasedOnQuantity(cart);
+                cart.Product.ProductImages = productImages.Where(x => x.ProductId == cart.Product.Id).ToList();
+
+				cart.Price = GetPriceBasedOnQuantity(cart);
                 ShoppingCartvM.OrderHeader.OrderTotal += (cart.Price *cart.Count);
             }
                 return View(ShoppingCartvM);
