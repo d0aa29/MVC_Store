@@ -4,17 +4,17 @@
 <div class="row pd-3">
 	@foreach (var product in Model)
 	{
-		<div class="col-lg-3 col-sm-6">
-			<div class="row pd-2">
+		<div class="col-lg-4 col-sm-6">
+			<div class="row pt-4">
 				<div class="col-12">
-					<div class="card border-0 p-3 shadow border-top border-5 rounded">
+					<div class="card border-0 p-3 shadow border-top border-5 rounded " style="height: 750px;">
 						@if(product.ProductImages!=null&&product.ProductImages.Count()>0 )
 						{
-							<img src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded " />
+							<img src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded fixed-image " />
 						}
 						else
 						{
-							<img src="" class="card-img-top rounded h-600 w-500 " />
+							<img src="" class="card-img-top rounded fixed-image  " />
 						}
 						
 				        <div class="card-body pd-0">

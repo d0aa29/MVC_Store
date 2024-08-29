@@ -25,6 +25,14 @@
 
 
 
+.fixed-image {
+    width: 100%; /* Ensures image is full width for responsiveness */
+    height: 600px; /* Sets a fixed height for uniformity */
+    object-fit: cover; /* Maintains aspect ratio while covering the set dimensions */
+}
+
+
+
 :root,
 [data-bs-theme=light] {
     --bs-blue: #325d88;
@@ -745,7 +753,7 @@ progress {
 }
 
     .blockquote-footer::before {
-        content: "— ";
+        content: "ï¿½ï¿½";
     }
 
 .img-fluid {
