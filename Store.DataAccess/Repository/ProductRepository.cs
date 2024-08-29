@@ -33,11 +33,11 @@ namespace Store.DataAccess.Repository
 				objfromdb.Title= product.Title;
 				objfromdb.Price50= product.Price50;
 				objfromdb.Price100= product.Price100;
+				objfromdb.ProductImages = product.ProductImages;
+				//           if (product.ImageUrl != null) {
+				//	objfromdb.ImageUrl = product.ImageUrl;
 
-                if (product.ImageUrl != null) {
-					objfromdb.ImageUrl = product.ImageUrl;
-
-				}
+				//}
 
 
 			}

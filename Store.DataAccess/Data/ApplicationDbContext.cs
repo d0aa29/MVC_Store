@@ -20,7 +20,7 @@ namespace Store.DataAccess.Data
 
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
-
+        public DbSet<ProductImage> ProductImages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Category>().HasData(
@@ -41,7 +41,7 @@ namespace Store.DataAccess.Data
                     Price50 =85 ,
                     Price100 = 80,
                     CategoryId = 1,
-					ImageUrl = ""
+					//ImageUrl = ""
 				},
                 new Product
                 {
@@ -55,7 +55,7 @@ namespace Store.DataAccess.Data
                     Price50 = 85,
                     Price100 = 80,
 					CategoryId = 1,
-					ImageUrl = ""
+					//ImageUrl = ""
 				},
                 new Product
                 {
@@ -69,7 +69,7 @@ namespace Store.DataAccess.Data
                     Price50 = 85,
                     Price100 = 80,
 					CategoryId = 1,
-					ImageUrl = ""
+					//ImageUrl = ""
 				}, new Product
                 {
                     Id = 4,
@@ -82,7 +82,7 @@ namespace Store.DataAccess.Data
                     Price50 = 85,
                     Price100 = 80,
 					CategoryId = 2,
-					ImageUrl = ""
+					//ImageUrl = ""
 				},
                 new Product
                 {
@@ -96,7 +96,7 @@ namespace Store.DataAccess.Data
                     Price50 = 85,
                     Price100 = 80,
 					CategoryId = 2,
-					ImageUrl = ""
+					//ImageUrl = ""
 				},
                 new Product
                 {
@@ -110,7 +110,7 @@ namespace Store.DataAccess.Data
                     Price50 = 85,
                     Price100 = 80,
 					CategoryId = 3,
-					ImageUrl=""
+					//ImageUrl=""
 				});
 
             modelBuilder.Entity<Company>().HasData(

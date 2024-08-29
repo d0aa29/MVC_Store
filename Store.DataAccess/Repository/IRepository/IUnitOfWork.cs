@@ -16,6 +16,8 @@ namespace Store.DataAccess.Repository.IRepository
         public IOrderHeaderRepository orderHeader { get; }
         public IOrderDetailRepository orderDetail { get; }
 
-        void Save();
+        public IProductImageRepository productImage { get; }
+
+		void Save();
     }
 }

@@ -24,8 +24,9 @@ namespace Store.DataAccess.Repository
 
         public IOrderDetailRepository orderDetail { get; private set; }
 
-      
-        public UnitOfWork(ApplicationDbContext db)
+		public IProductImageRepository productImage { get; private set; }
+
+		public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             Category=new CategoryRepository(_db);
@@ -35,6 +36,7 @@ namespace Store.DataAccess.Repository
             appUser=new AppUserRepository(_db);
             orderHeader=new OrderHeaderRepository(_db);
             orderDetail= new OrderDetailRepository(_db);
+            productImage=new ProductImageRepository(_db);
 
         }
 
