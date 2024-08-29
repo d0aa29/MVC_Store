@@ -251,17 +251,21 @@ namespace Mystore.Areas.Admin.Controllers
                 return Json(new { success = false, Message = "Error while deleting" });
             }
 
+            string productpath = @"images\products\product-" + id;
 
-            //var oldpath = Path.Combine(_webHostEnvironment.WebRootPath,
-            //              ProductToDeleted.ImageUrl.TrimStart('\\'));
+			string finalpath = Path.Combine(_webHostEnvironment.WebRootPath, productpath);
 
-            //if (System.IO.File.Exists(oldpath))
-            //{
-            //    System.IO.File.Delete(oldpath);
-            //}
-            _UnitOfWork.Product.Remove(ProductToDeleted);
+            if (Directory.Exists(finalpath))
+            {
+                string[] filePaths = Directory.GetFiles(finalpath);
+                foreach (string filePath in filePaths) {
+					System.IO.File.Delete(filePath);
+				}
+                Directory.Delete(finalpath);
+            }
+			_UnitOfWork.Product.Remove(ProductToDeleted);
             _UnitOfWork.Save();
-            List<Product> ObjProductList = _UnitOfWork.Product.GetAll(includeproperties: "Category").ToList();
+           // List<Product> ObjProductList = _UnitOfWork.Product.GetAll(includeproperties: "Category").ToList();
 
             return Json(new { success = true, Message = "deleting successfully" });
         }
