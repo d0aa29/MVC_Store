@@ -5,11 +5,11 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mystore", "Bookstore\Mystore.csproj", "{C57DB9FC-5601-4BDA-BE07-D1469BFBD35B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.DataAccess", "Store.DataAccess\Store.DataAccess.csproj", "{39355D98-F6D6-4993-B0B9-DD87CEE0265E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.DataAccess", "Store.DataAccess\Store.DataAccess.csproj", "{39355D98-F6D6-4993-B0B9-DD87CEE0265E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Models", "Store.Models\Store.Models.csproj", "{922902C1-F838-4328-9865-9A0B0AD52184}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Models", "Store.Models\Store.Models.csproj", "{922902C1-F838-4328-9865-9A0B0AD52184}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Utility", "Store.Utility\Store.Utility.csproj", "{DEB1A647-60E4-4CC7-8B23-6CDC72487367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Store.Utility", "Store.Utility\Store.Utility.csproj", "{DEB1A647-60E4-4CC7-8B23-6CDC72487367}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

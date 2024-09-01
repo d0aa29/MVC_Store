@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net.NetworkInformation;
 // @using Mystore.Models 
 using Store.Models;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Store.Utility;
 using Microsoft.AspNetCore.Http;
+using Store.Models.ViewModel;
 
 namespace Mystore.Areas.Customer.Controllers
 {
@@ -25,13 +27,138 @@ namespace Mystore.Areas.Customer.Controllers
             _UnitOfWork = UnitOfWork;
             _logger = logger;
         }
+		//		public IActionResult Index(int? category)
+		//{
 
-        public IActionResult Index()
-        {
-            IEnumerable<Product> ProductList = _UnitOfWork.Product.GetAll(includeproperties: "Category,ProductImages");
+		//    // Get all categories from the repository
+		//    var categories = _UnitOfWork.Category.GetAll();
 
-            return View(ProductList);
-        }
+		//    // Create a new ProductVM instance
+		//    var viewModel = new ProductVM
+		//    {
+		//        Product = new Product(),  // Initialize the Product object
+
+		//        // Populate the category list from the database
+		//        mycategorylist = categories.Select(c => new SelectListItem
+		//        {
+		//            Text = c.Name,       // Display category name
+		//            Value = c.Id.ToString()  // Value sent back to the server
+		//        }).ToList()
+		//    };
+
+		//    // Set the default selected category if provided
+		//    if (category.HasValue)
+		//    {
+		//        viewModel.Product.CategoryId = category.Value;
+		//    }
+
+		//    // Fetch products based on the selected category
+		//       viewModel.ProductList = category.HasValue
+		//        ? _UnitOfWork.Product.GetAll(p => p.CategoryId == category.Value, includeproperties: "Category,ProductImages")
+		//        : _UnitOfWork.Product.GetAll(includeproperties: "Category,ProductImages");
+
+		//    return View(viewModel);
+		//}
+		//public IActionResult Index(int? category)
+		//{
+		//	// Get all categories from the repository
+		//	var categories = _UnitOfWork.Category.GetAll();
+
+		//	// Create a new ProductVM instance
+		//	var viewModel = new ProductVM
+		//	{
+		//		Product = new Product(),  // Initialize the Product object
+
+		//		// Populate the category list from the database
+		//		mycategorylist = categories.Select(c => new SelectListItem
+		//		{
+		//			Text = c.Name,       // Display category name
+		//			Value = c.Id.ToString()  // Value sent back to the server
+		//		}).ToList()
+		//	};
+
+		//	// Fetch products based on the selected category
+		//	viewModel.ProductList = category.HasValue
+		//		? _UnitOfWork.Product.GetAll(p => p.CategoryId == category.Value, includeproperties: "Category,ProductImages")
+		//		: _UnitOfWork.Product.GetAll(includeproperties: "Category,ProductImages");
+
+		//	return View(viewModel);
+		//}
+
+
+
+
+		public IActionResult Index(int? category)
+		{
+			var categories = _UnitOfWork.Category.GetAll();
+
+			// Prepare the view model
+			var viewModel = new ProductVM
+			{
+				Product = new Product(),
+				mycategorylist = categories.Select(c => new SelectListItem
+				{
+					Text = c.Name,
+					Value = c.Id.ToString()
+				}).ToList()
+			};
+
+			// Set the selected category
+			ViewData["SelectedCategory"] = category.HasValue ? category.Value.ToString() : "";
+
+			// Fetch products based on the selected category
+			if (category == -1)
+			{
+				viewModel.ProductList = _UnitOfWork.Product.GetAll(includeproperties: "Category,ProductImages");
+			}
+			else
+			{
+				viewModel.ProductList = category.HasValue
+					? _UnitOfWork.Product.GetAll(p => p.CategoryId == category.Value, includeproperties: "Category,ProductImages")
+					: _UnitOfWork.Product.GetAll(includeproperties: "Category,ProductImages");
+			}
+			return View(viewModel);
+		}
+
+
+		//public IActionResult Index(int? category)
+		//{
+		//	// Debug and log the category parameter
+		//	// e.g., _logger.LogInformation("Category: " + category);
+
+		//	// Get all categories from the repository
+		//	var categories = _UnitOfWork.Category.GetAll();
+
+		//	// Create a new ProductVM instance
+		//	var viewModel = new ProductVM
+		//	{
+		//		Product = new Product(),  // Initialize the Product object
+
+		//		// Populate the category list from the database
+		//		mycategorylist = categories.Select(c => new SelectListItem
+		//		{
+		//			Text = c.Name,       // Display category name
+		//			Value = c.Id.ToString(),  // Value sent back to the server
+		//			Selected = c.Id == category // Set selected if it matches the category
+		//		}).ToList()
+		//	};
+
+		//	// Fetch products based on the selected category
+		//	viewModel.ProductList = category.HasValue
+		//		? _UnitOfWork.Product.GetAll(p => p.CategoryId == category.Value, includeproperties: "Category,ProductImages")
+		//		: _UnitOfWork.Product.GetAll(includeproperties: "Category,ProductImages");
+
+		//	return View(viewModel);
+		//}
+
+
+
+		//public IActionResult Index()
+		//{
+		//    IEnumerable<Product> ProductList = _UnitOfWork.Product.GetAll(includeproperties: "Category,ProductImages");
+
+		//    return View(ProductList);
+		//}
 		public IActionResult Details(int proid)
 		{
             ShoppingCart Cart = new()

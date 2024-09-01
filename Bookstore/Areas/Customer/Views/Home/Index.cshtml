@@ -1,8 +1,172 @@
-﻿@model IEnumerable<Product>
+﻿
+
+@model Store.Models.ViewModel.ProductVM
+<form asp-action="Index" method="get" class="mb-3">
+	<div class="row">
+		<div class="col-sm-12 d-flex justify-content-end">
+			<div style="margin-right: 20px;">
+				<!-- Adjust margin as needed -->
+				<select id="category" name="category" class="form-select border-0 shadow-sm"
+						style="max-width: 200px;" onchange="this.form.submit()">
+					<option value="">
+						Items
+					</option>
+					@foreach (var category in Model.mycategorylist)
+					{
+						<option value="@category.Value">
+							@category.Text
+						</option>
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+</form>
+
+
+
+
+
+
+@* <form asp-action="Index" method="get" class="mb-3">
+    <div class="row">
+        <!-- Label that changes based on the selected category -->
+        <div class="col-sm-12 d-flex justify-content-end align-items-center">
+            <label id="categoryLabel" class="me-3">Select Category</label> <!-- Default label text -->
+            <div>
+                <select id="category" name="category" class="form-select border-0 shadow-sm"
+                        style="max-width: 200px;" onchange="updateLabel(); this.form.submit();">
+                    <option value="" selected>
+                        Select Category
+                    </option>
+                    @foreach (var category in Model.mycategorylist)
+                    {
+                        <option value="@category.Value" >
+                            @category.Text
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function updateLabel() {
+        var select = document.getElementById("category");
+        var label = document.getElementById("categoryLabel");
+        var selectedOption = select.options[select.selectedIndex].text;
+        
+        if (selectedOption.trim() !== 'Select Category') {
+            label.textContent = selectedOption; // Update label with selected category
+        } else {
+            label.textContent = 'Select Category'; // Default text when no category is selected
+        }
+    }
+</script> *@
+
+
+@* 
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-end">
+            <div style="margin-right: 20px;"> <!-- Adjust margin as needed -->
+                <select id="category" name="category" class="form-select border-0 shadow-sm" 
+                        style="max-width: 200px;" onchange="this.form.submit()">
+                    <option value="" >
+                        Select Category
+                    </option>
+                    @foreach (var category in Model.mycategorylist)
+                    {
+                        <option value="@category.Value"
+                               >
+                            @category.Text
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</form> *@
+
+
+
 
 
 <div class="row pd-3">
-	@foreach (var product in Model)
+	@foreach (var product in Model.ProductList)
+	{
+		<div class="col-lg-4 col-sm-6">
+			<div class="row pt-4">
+				<div class="col-12">
+					<div class="card border-0 p-3 shadow border-top border-5 rounded" style="height: 750px;">
+						@if (product.ProductImages != null && product.ProductImages.Count() > 0)
+						{
+							<img src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded fixed-image" />
+						}
+						else
+						{
+							<img src="" class="card-img-top rounded fixed-image" />
+						}
+
+						<div class="card-body pd-0">
+							<div class="pl-1">
+								<p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Title</p>
+								<p class="card-title text-danger text-center">by <b>@product.Author</b></p>
+							</div>
+							<div class="pl-1">
+								<p class="text-dark text-opacity-75 text-center mb-0">
+									List Price:
+									<span class="text-decoration-line-through">
+										@product.ListPrice.ToString("c")
+									</span>
+								</p>
+							</div>
+							<div class="pl-1">
+								<p class="text-dark text-opacity-75 text-center">
+									As low as:
+									<span>
+										@product.Price100.ToString("c")
+									</span>
+								</p>
+							</div>
+						</div>
+						<div>
+							<a asp-action="Details"
+							   asp-route-proid="@product.Id"
+							   class="btn btn-primary bg-gradient border-0 form-control">
+								Details
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+
+
+
+
+
+
+@* @model Store.Models.ViewModel.ProductVM
+
+<div class="mb-4">
+	<form asp-action="Index" method="get">
+		<div class="mb-2 row p-1">
+			<label asp-for="Product.CategoryId" class="p-0">Filter by Category:</label>
+			<select asp-for="Product.CategoryId" asp-items="Model.mycategorylist" class="form-select border-0 shadow" onchange="this.form.submit()">
+				<option value="">Select category</option>
+			</select>
+		</div>
+	</form>
+</div>
+
+
+<div class="row pd-3">
+	@foreach (var product in Model.ProductList)
 	{
 		<div class="col-lg-4 col-sm-6">
 			<div class="row pt-4">
@@ -54,3 +218,4 @@
 
 	}
 </div>
+ *@
