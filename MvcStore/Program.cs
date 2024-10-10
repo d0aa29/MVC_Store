@@ -9,7 +9,7 @@ using Store.Utility;
 using Stripe;
 using Microsoft.CodeAnalysis.Options;
 
-namespace Bookstore
+namespace MvcStore
 {
 	public class Program
 	{
