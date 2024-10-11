@@ -26,7 +26,7 @@ namespace Store.DataAccess.Repository
 				objfromdb.ISBN= product.ISBN;
 				objfromdb.ListPrice= product.ListPrice;
                 objfromdb.Price= product.Price;
-				objfromdb.Author= product.Author;
+				objfromdb.Brand = product.Brand;
                 objfromdb.Description= product.Description;
           
 				objfromdb.CategoryId= product.CategoryId;

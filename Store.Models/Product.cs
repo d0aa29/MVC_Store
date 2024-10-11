@@ -20,7 +20,7 @@ namespace Store.Models
         [Required]
         public string Title { get; set; }
         [Required]
-        public string Author { get; set; }
+        public string Brand { get; set; }
         [Required]
         public string ISBN { get; set; }
         [Required]
